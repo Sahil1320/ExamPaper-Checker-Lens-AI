@@ -1,0 +1,139 @@
+.uploadCard {
+  background: var(--color-white);
+  border: var(--border-dashed);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  position: relative;
+  min-height: 150px;
+  flex: 1;
+}
+
+.uploadCard:hover {
+  border-color: var(--color-coral);
+  background: var(--color-coral-bg);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.uploadCardDragging {
+  border-color: var(--color-coral);
+  background: var(--color-coral-bg);
+  transform: scale(1.02);
+  box-shadow: 0 0 0 3px var(--color-coral-glow);
+}
+
+.uploadCardFilled {
+  border: 1px solid var(--color-gray-300);
+  border-style: solid;
+  cursor: default;
+  padding: var(--space-5) var(--space-5);
+  gap: var(--space-2);
+}
+
+.uploadCardFilled:hover {
+  transform: none;
+  box-shadow: var(--shadow-sm);
+  background: var(--color-white);
+  border-color: var(--color-gray-300);
+}
+
+.uploadIcon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-gray-500);
+}
+
+.uploadLabel {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-gray-800);
+  text-align: center;
+}
+
+.uploadLabel span {
+  color: var(--color-coral);
+  font-weight: 600;
+}
+
+.uploadHint {
+  font-size: var(--font-size-xs);
+  color: var(--color-gray-500);
+}
+
+/* Filled state */
+.fileInfo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+}
+
+.fileIcon {
+  width: 40px;
+  height: 40px;
+  background: var(--color-error-light);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.fileIconText {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-error);
+  text-transform: uppercase;
+}
+
+.fileDetails {
+  flex: 1;
+  min-width: 0;
+}
+
+.fileName {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-gray-900);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fileMeta {
+  font-size: var(--font-size-xs);
+  color: var(--color-gray-500);
+}
+
+.removeBtn {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  background: var(--color-gray-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-gray-500);
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.removeBtn:hover {
+  background: var(--color-error-light);
+  color: var(--color-error);
+}
+
+.hiddenInput {
+  display: none;
+}

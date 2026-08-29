@@ -1,0 +1,162 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-8) var(--space-6);
+  max-width: 720px;
+  margin: 0 auto;
+  animation: fadeInUp 0.5s ease;
+}
+
+.title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--color-black);
+  text-align: center;
+  margin-bottom: var(--space-2);
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
+
+.titleHighlight {
+  color: #FF4B2B;
+  background: rgba(255, 107, 74, 0.12);
+  padding: 2px 12px;
+  border-radius: 8px;
+  display: inline;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-500);
+  text-align: center;
+  margin-bottom: var(--space-6);
+}
+
+/* Teacher Avatar */
+.avatarContainer {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin-bottom: var(--space-8);
+}
+
+.avatarRing {
+  position: absolute;
+  inset: -8px;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--color-coral-lighter);
+  animation: pulse 3s ease-in-out infinite;
+}
+
+.avatarRingOuter {
+  position: absolute;
+  inset: -16px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-coral-lighter);
+  opacity: 0.5;
+  animation: pulse 3s ease-in-out infinite 0.5s;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: var(--radius-full);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  position: relative;
+  overflow: hidden;
+}
+
+.avatarImg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Cards Row */
+.cardsRow {
+  display: flex;
+  gap: var(--space-5);
+  width: 100%;
+  margin-bottom: var(--space-8);
+}
+
+/* Start Mapping Button */
+.startBtn {
+  padding: var(--space-3) var(--space-8);
+  background: var(--color-dark);
+  color: white;
+  border-radius: var(--radius-xl);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+}
+
+.startBtn:hover:not(:disabled) {
+  background: var(--color-black);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
+}
+
+.startBtnDisabled,
+.startBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+  box-shadow: none;
+}
+
+.helperText {
+  font-size: var(--font-size-xs);
+  color: var(--color-gray-500);
+  text-align: center;
+  margin-top: var(--space-4);
+}
+
+.errorText {
+  font-size: var(--font-size-sm);
+  color: var(--color-error);
+  text-align: center;
+  margin-top: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-error-light);
+  border-radius: var(--radius-md);
+}
+
+
+@media (max-width: 640px) {
+  .container {
+    padding: var(--space-6) var(--space-4);
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .cardsRow {
+    flex-direction: column;
+  }
+
+  .avatarContainer {
+    width: 80px;
+    height: 80px;
+    margin-bottom: var(--space-6);
+  }
+
+  .avatar {
+    width: 80px;
+    height: 80px;
+    font-size: 36px;
+  }
+}
