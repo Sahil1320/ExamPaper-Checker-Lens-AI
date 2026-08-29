@@ -100,10 +100,16 @@ export default function Home() {
 
       setCurrentStep(2);
 
-      const data = await response.json();
+      const text = await response.text();
+      let data: any;
+      try {
+        data = JSON.parse(text);
+      } catch {
+        throw new Error(`Server error (${response.status}): ${text.slice(0, 300)}`);
+      }
 
-      if (!data.success) {
-        throw new Error(data.error || 'Processing failed');
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || `Processing failed with status ${response.status}`);
       }
 
       setCurrentStep(3);

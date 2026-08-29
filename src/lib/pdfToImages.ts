@@ -31,9 +31,9 @@ export async function pdfToImages(file: File): Promise<string[]> {
     const page = await pdf.getPage(i);
     const unscaledViewport = page.getViewport({ scale: 1.0 });
 
-    // Target a balanced max dimension of ~1000px (ideal for clear vision OCR without excessive tokens)
+    // Target a max dimension of ~900px for sharp OCR while keeping base64 small (<1MB total payload)
     const maxDim = Math.max(unscaledViewport.width, unscaledViewport.height);
-    const scale = maxDim > 0 ? Math.min(1.4, 1000 / maxDim) : 1.2;
+    const scale = maxDim > 0 ? Math.min(1.2, 900 / maxDim) : 1.0;
     const viewport = page.getViewport({ scale });
 
     const canvas = document.createElement('canvas');
@@ -46,8 +46,8 @@ export async function pdfToImages(file: File): Promise<string[]> {
       viewport: viewport,
     }).promise;
 
-    // Use JPEG 0.8 quality for massive token/payload reduction
-    const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+    // Use JPEG 0.7 quality for fast transmission and compact payload
+    const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
     images.push(dataUrl);
 
     canvas.remove();
