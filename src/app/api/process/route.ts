@@ -49,34 +49,52 @@ export async function POST(req: NextRequest) {
     const fallbackService = useGemini && groqKey ? groqService : (!useGemini && geminiKey ? geminiService : null);
     const fallbackKey = useGemini && groqKey ? groqKey : (!useGemini && geminiKey ? geminiKey : null);
 
-    let extractedQuestions;
-    let evalResult;
+    let extractedQuestions: { questions: { number: string; text: string; maxMarks: number }[] } = { questions: [] };
+    let evalResult: any = null;
 
     try {
-      // Step 1: Extract questions from the question paper
-      extractedQuestions = await primaryService.extractQuestions(primaryKey, questionPaperImages);
-
-      // Step 2: Extract answers and grade them
-      evalResult = await primaryService.extractAnswersAndGrade(
-        primaryKey,
-        answerSheetImages,
-        extractedQuestions.questions
-      );
+      if (useGemini) {
+        // Fast single-pass evaluation (4-7s)
+        const unifiedResult = await geminiService.evaluateExamUnified(
+          geminiKey as string,
+          questionPaperImages,
+          answerSheetImages
+        );
+        extractedQuestions = { questions: unifiedResult.questions || [] };
+        evalResult = { evaluations: unifiedResult.evaluations || [] };
+      } else {
+        // Step 1: Extract questions from the question paper
+        extractedQuestions = await groqService.extractQuestions(primaryKey, questionPaperImages);
+        // Step 2: Extract answers and grade them
+        evalResult = await groqService.extractAnswersAndGrade(
+          primaryKey,
+          answerSheetImages,
+          extractedQuestions.questions
+        );
+      }
     } catch (primaryErr) {
       console.warn(`[AI] Primary provider failed:`, (primaryErr as Error)?.message);
 
       if (fallbackService && fallbackKey) {
-        console.log(`[AI] Falling back to ${useGemini ? 'Groq' : 'Gemini'}...`);
-        // Step 1 fallback
-        if (!extractedQuestions) {
-          extractedQuestions = await fallbackService.extractQuestions(fallbackKey, questionPaperImages);
+        console.log(`[AI] Falling back to secondary provider...`);
+        if (useGemini) {
+          // Fallback to Groq
+          extractedQuestions = await groqService.extractQuestions(fallbackKey, questionPaperImages);
+          evalResult = await groqService.extractAnswersAndGrade(
+            fallbackKey,
+            answerSheetImages,
+            extractedQuestions.questions
+          );
+        } else {
+          // Fallback to Gemini
+          const unifiedResult = await geminiService.evaluateExamUnified(
+            fallbackKey,
+            questionPaperImages,
+            answerSheetImages
+          );
+          extractedQuestions = { questions: unifiedResult.questions || [] };
+          evalResult = { evaluations: unifiedResult.evaluations || [] };
         }
-        // Step 2 fallback
-        evalResult = await fallbackService.extractAnswersAndGrade(
-          fallbackKey,
-          answerSheetImages,
-          extractedQuestions.questions
-        );
       } else {
         throw primaryErr;
       }
